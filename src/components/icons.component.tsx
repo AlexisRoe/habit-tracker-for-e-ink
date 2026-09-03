@@ -9,6 +9,7 @@ interface IconProps {
   /** Which icon glyph to render. */
   variant:
     | "chevL"
+    | "chevR"
     | "upload"
     | "download"
     | "plus"
@@ -20,6 +21,7 @@ interface IconProps {
     | "search"
     | "pen"
     | "arrowR"
+    | "arrowL"
     | "moon"
     | "refresh";
   /** Called when the icon is clicked. */

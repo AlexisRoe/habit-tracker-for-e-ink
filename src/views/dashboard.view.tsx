@@ -1,5 +1,6 @@
 import type { JSX } from "react";
 
+import { DateNav } from "../components/date-nav.component";
 import Page from "../components/page.component";
 
 export function DashboardView(): JSX.Element {
@@ -9,7 +10,9 @@ export function DashboardView(): JSX.Element {
         <Page.Title />
         <Page.Nav />
       </Page.Header>
-      <Page.Content>DASHBOARD</Page.Content>
+      <Page.Content>
+        <DateNav />
+      </Page.Content>
     </Page>
   );
 }

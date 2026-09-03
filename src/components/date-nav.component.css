@@ -1,0 +1,28 @@
+.date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.date-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.date-nav-arrow,
+.date-nav-date {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+}
+
+.date-nav-date .ink-text--mono {
+  font-weight: 300;
+  line-height: 1;
+}

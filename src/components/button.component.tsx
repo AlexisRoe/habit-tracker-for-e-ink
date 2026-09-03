@@ -189,7 +189,7 @@ interface AddButtonProps extends BaseButtonProps {}
  */
 function AddButton({ onClick }: AddButtonProps): JSX.Element {
   return (
-    <Button variant="primary" onClick={onClick}>
+    <Button variant="secondary" onClick={onClick}>
       <Icon variant="plus" label="update or create" />
     </Button>
   );

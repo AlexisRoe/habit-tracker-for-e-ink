@@ -65,7 +65,11 @@ function PageTitle({ children = "HabitTracker" }: PageTitleProps): JSX.Element {
   return <Title size="2">{children}</Title>;
 }
 
-function PageNavigation(): JSX.Element {
+interface PageNavigationProps {
+  children?: ReactNode;
+}
+
+function PageNavigation(props: PageNavigationProps): JSX.Element {
   return (
     <nav className="page-nav">
       <NavLink
@@ -81,6 +85,7 @@ function PageNavigation(): JSX.Element {
       >
         <span>Year</span>
       </NavLink>
+      {props.children && props.children}
     </nav>
   );
 }

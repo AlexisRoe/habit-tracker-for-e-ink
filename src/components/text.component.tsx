@@ -61,6 +61,7 @@ export function TitleLabel(props: TitleLabelProps): JSX.Element {
 interface MonoProps {
   /** Text content, rendered in a monospace font. */
   children: string;
+  className?: string;
 }
 
 /**
@@ -71,9 +72,9 @@ interface MonoProps {
  * <Mono>{'01'}</Mono>
  * ```
  */
-export function Mono({ children }: MonoProps): JSX.Element {
+export function Mono({ children, className = "" }: MonoProps): JSX.Element {
   return (
-    <e-text kind="mono" as="span">
+    <e-text kind="mono" as="span" className={className}>
       {children}
     </e-text>
   );
