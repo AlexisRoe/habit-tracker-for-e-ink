@@ -8,7 +8,7 @@ import "./yearly-progress.component.css";
 
 /** A single calendar week's habit-completion share, as a percentage 0–100. */
 interface WeeklyCompletion {
-  /** ISO-ish week number within the year, 1–52. */
+  /** ISO-ish week number within the year, 1-based (52 or 53 weeks total). */
   weekNumber: number;
   /** The week's 7 days, Monday–Sunday. */
   days: Date[];
@@ -41,9 +41,10 @@ interface YearlyProgressProps {
 }
 
 /**
- * Grid of the year's 52 weeks, each shown as a card with a week number, a
- * date range, and a circle whose fill height represents the share of habits
- * completed that week (0–100%). The week containing `today` is outlined.
+ * Grid of the year's weeks (52 or 53, depending on the year), each shown as
+ * a card with a week number, a date range, and a circle whose fill height
+ * represents the share of habits completed that week (0–100%). The week
+ * containing `today` is outlined.
  *
  * @example
  * ```tsx
@@ -63,7 +64,9 @@ export function YearlyProgress({
   return (
     <div className="yearly-progress">
       <div className="yearly-progress-header">
-        <Mono className="yearly-progress-title">{`${year} — Fifty-two weeks`.toUpperCase()}</Mono>
+        <Mono className="yearly-progress-title">
+          {`${year} — ${weeks.length} weeks`.toUpperCase()}
+        </Mono>
         <div className="yearly-progress-controls">
           <button
             type="button"

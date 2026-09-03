@@ -67,17 +67,23 @@ export function isBeforeDate(date: Date, referenceDate: Date): boolean {
 }
 
 /**
- * Returns the 52 Monday–Sunday weeks of `year`, each as its 7 `Date`s,
- * starting from the Monday of the week containing January 1st.
+ * Returns the Monday–Sunday weeks of `year`, each as its 7 `Date`s, starting
+ * from the Monday of the week containing January 1st and continuing through
+ * the week containing December 31st (52 or 53 weeks, depending on the year).
  */
 export function getWeeksOfYear(year: number): Date[][] {
   const [firstMonday] = getWeekDays(new Date(year, 0, 1));
+  const lastDay = new Date(year, 11, 31);
 
-  return Array.from({ length: 52 }, (_, index) => {
-    const monday = new Date(firstMonday);
-    monday.setDate(firstMonday.getDate() + index * 7);
-    return getWeekDays(monday);
-  });
+  const weeks: Date[][] = [];
+  let monday = firstMonday;
+  while (monday <= lastDay) {
+    weeks.push(getWeekDays(monday));
+    monday = new Date(monday);
+    monday.setDate(monday.getDate() + 7);
+  }
+
+  return weeks;
 }
 
 /**
