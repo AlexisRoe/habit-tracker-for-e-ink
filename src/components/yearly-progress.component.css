@@ -1,0 +1,100 @@
+.yearly-progress {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.yearly-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding-bottom: 3rem;
+}
+
+.yearly-progress-header .ink-text--mono {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.yearly-progress-controls {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.yearly-progress-arrow {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+}
+
+.yearly-progress-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.yearly-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+}
+
+.yearly-progress-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+  gap: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #000000;
+  padding: 1rem;
+}
+
+.yearly-progress-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.yearly-progress-card-current {
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+}
+
+.yearly-progress-week-label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.yearly-progress-circle {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.yearly-progress-circle-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000000;
+}
+
+.yearly-progress-range {
+  font-size: 0.8125rem;
+  font-weight: normal;
+}

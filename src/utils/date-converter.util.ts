@@ -58,3 +58,33 @@ export function toDateKey(date: Date): string {
 export function isFutureDate(date: Date, today: Date = new Date()): boolean {
   return toDateKey(date) > toDateKey(today);
 }
+
+/**
+ * Returns the 52 Monday–Sunday weeks of `year`, each as its 7 `Date`s,
+ * starting from the Monday of the week containing January 1st.
+ */
+export function getWeeksOfYear(year: number): Date[][] {
+  const [firstMonday] = getWeekDays(new Date(year, 0, 1));
+
+  return Array.from({ length: 52 }, (_, index) => {
+    const monday = new Date(firstMonday);
+    monday.setDate(firstMonday.getDate() + index * 7);
+    return getWeekDays(monday);
+  });
+}
+
+/**
+ * Formats a Monday–Sunday week (as returned by {@link getWeekDays}) as a
+ * range label, e.g. `"Dec 29 – Jan 4"`.
+ */
+export function formatWeekRange(weekDays: Date[]): string {
+  const [start, end] = [weekDays[0], weekDays[weekDays.length - 1]];
+
+  const startLabel = start.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const endLabel =
+    start.getMonth() === end.getMonth()
+      ? end.toLocaleDateString("en-US", { day: "numeric" })
+      : end.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
+  return `${startLabel} – ${endLabel}`;
+}
