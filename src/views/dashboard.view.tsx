@@ -6,7 +6,7 @@ import { EmptyState } from "../components/empty-state.component";
 import { HabitTable } from "../components/habit-table.component";
 import Page from "../components/page.component";
 import { useHabits } from "../hooks/use-habits.hook";
-import { getWeekDays } from "../utils/date-converter.util";
+import { getWeekDays, toDateKey } from "../utils/date-converter.util";
 
 export function DashboardView(): JSX.Element {
   const [date, setDate] = useState(() => new Date());
@@ -26,8 +26,15 @@ export function DashboardView(): JSX.Element {
     setDate((current) => {
       const next = new Date(current);
       next.setDate(current.getDate() + 7);
-      return next;
+
+      const today = new Date();
+      const isFutureWeek = toDateKey(getWeekDays(next)[0]) > toDateKey(getWeekDays(today)[0]);
+      return isFutureWeek ? current : next;
     });
+  }
+
+  function goToCurrentWeek(): void {
+    setDate(new Date());
   }
 
   return (
@@ -37,7 +44,12 @@ export function DashboardView(): JSX.Element {
         <Page.Nav />
       </Page.Header>
       <Page.Content>
-        <DateNav date={date} onPrevious={goToPreviousWeek} onNext={goToNextWeek} />
+        <DateNav
+          date={date}
+          onPrevious={goToPreviousWeek}
+          onNext={goToNextWeek}
+          onDateClick={goToCurrentWeek}
+        />
         {habits.length === 0 ? (
           <EmptyState icon="plus" message="... no habit yet ..." />
         ) : (

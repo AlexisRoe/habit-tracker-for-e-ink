@@ -64,8 +64,10 @@ export function useHabits(date: Date = new Date()): UseHabitsReturn {
         db.fulfillments.where("date").anyOf(weekKeys).toArray(),
       ]);
 
+      const weekEndKey = weekKeys[weekKeys.length - 1];
       const activeHabits = allHabits
         .filter((habit): habit is Habit & { id: number } => habit.archivedAt == null)
+        .filter((habit) => toDateKey(new Date(habit.createdAt)) <= weekEndKey)
         .sort((a, b) => a.order - b.order);
 
       const completionsByHabitId = new Map<number, Set<string>>();

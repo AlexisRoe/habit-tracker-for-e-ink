@@ -27,6 +27,11 @@
   cursor: pointer;
 }
 
+.date-nav-arrow:disabled {
+  color: #cccccc;
+  cursor: default;
+}
+
 .date-nav-date .ink-text--mono {
   font-size: 1.25rem;
   font-weight: 300;

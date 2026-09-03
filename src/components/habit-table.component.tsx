@@ -1,7 +1,7 @@
 import { type JSX, useState } from "react";
 
 import type { HabitWithCompletions } from "../hooks/use-habits.hook";
-import { isFutureDate, toDateKey } from "../utils/date-converter.util";
+import { isBeforeDate, isFutureDate, toDateKey } from "../utils/date-converter.util";
 import { Icon } from "./icons.component";
 
 import "./habit-table.component.css";
@@ -125,7 +125,7 @@ function HabitRow({
       {weekDays.map((day) => {
         const dateKey = toDateKey(day);
 
-        if (isFutureDate(day, today)) {
+        if (isFutureDate(day, today) || isBeforeDate(day, new Date(habit.createdAt))) {
           return <div className="habit-table-day-col habit-cell habit-cell-future" key={dateKey} />;
         }
 

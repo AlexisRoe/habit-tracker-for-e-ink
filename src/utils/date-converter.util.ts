@@ -60,6 +60,13 @@ export function isFutureDate(date: Date, today: Date = new Date()): boolean {
 }
 
 /**
+ * Whether `date` falls strictly before `referenceDate` (time-of-day ignored).
+ */
+export function isBeforeDate(date: Date, referenceDate: Date): boolean {
+  return toDateKey(date) < toDateKey(referenceDate);
+}
+
+/**
  * Returns the 52 Monday–Sunday weeks of `year`, each as its 7 `Date`s,
  * starting from the Monday of the week containing January 1st.
  */

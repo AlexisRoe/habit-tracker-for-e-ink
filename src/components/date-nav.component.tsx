@@ -1,6 +1,11 @@
 import type { JSX } from "react";
 
-import { convertDateToTitle, convertDateToWeekRangeLabel } from "../utils/date-converter.util";
+import {
+  convertDateToTitle,
+  convertDateToWeekRangeLabel,
+  getWeekDays,
+  toDateKey,
+} from "../utils/date-converter.util";
 import { Icon } from "./icons.component";
 import { Mono } from "./text.component";
 
@@ -8,7 +13,7 @@ import "./date-nav.component.css";
 
 /** Props for {@link DateNav}. */
 interface DateNavProps {
-  /** Date used to derive the displayed week range and current-date label. */
+  /** Date whose Monday–Sunday week is displayed as the range on the left. */
   date?: Date;
   /** Called when the previous-week arrow is clicked. */
   onPrevious?: () => void;
@@ -20,7 +25,11 @@ interface DateNavProps {
 
 /**
  * Week navigation bar: the Monday–Sunday range of `date` on the left, and
- * previous/next arrows around the current date's short label on the right.
+ * previous/next arrows around today's actual date on the right. The center
+ * label always shows the real current date, regardless of which week is
+ * being viewed; clicking it should jump back to the current week. The next-
+ * week arrow is disabled once `date`'s week already contains today, since
+ * navigating into a future week is not allowed.
  *
  * @example
  * ```tsx
@@ -33,6 +42,9 @@ export function DateNav({
   onNext,
   onDateClick,
 }: DateNavProps): JSX.Element {
+  const today = new Date();
+  const isCurrentOrFutureWeek = toDateKey(getWeekDays(date)[0]) >= toDateKey(getWeekDays(today)[0]);
+
   return (
     <div className="date-nav">
       <Mono className="date-nav-week">{convertDateToWeekRangeLabel(date)}</Mono>
@@ -46,9 +58,15 @@ export function DateNav({
           <Icon variant="arrowL" label="Previous week" />
         </button>
         <button type="button" className="date-nav-date" onClick={onDateClick}>
-          <Mono>{convertDateToTitle(date)}</Mono>
+          <Mono>{convertDateToTitle(today)}</Mono>
         </button>
-        <button type="button" className="date-nav-arrow" onClick={onNext} aria-label="Next week">
+        <button
+          type="button"
+          className="date-nav-arrow"
+          onClick={onNext}
+          disabled={isCurrentOrFutureWeek}
+          aria-label="Next week"
+        >
           <Icon variant="arrowR" label="Next week" />
         </button>
       </div>
