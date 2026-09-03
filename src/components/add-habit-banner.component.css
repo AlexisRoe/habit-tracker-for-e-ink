@@ -1,0 +1,25 @@
+.add-habit-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin-top: auto;
+  padding: 1rem 1.5rem;
+  background: #000000;
+  color: #ffffff;
+}
+
+.add-habit-banner-label {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.add-habit-banner-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
