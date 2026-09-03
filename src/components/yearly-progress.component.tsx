@@ -1,32 +1,11 @@
 import type { JSX } from "react";
 
-import { formatWeekRange, getWeeksOfYear, toDateKey } from "../utils/date-converter.util";
+import { useYearlyProgress } from "../hooks/use-yearly-progress.hook";
+import { formatWeekRange, toDateKey } from "../utils/date-converter.util";
 import { Icon } from "./icons.component";
 import { Mono } from "./text.component";
 
 import "./yearly-progress.component.css";
-
-/** A single calendar week's habit-completion share, as a percentage 0–100. */
-interface WeeklyCompletion {
-  /** ISO-ish week number within the year, 1-based (52 or 53 weeks total). */
-  weekNumber: number;
-  /** The week's 7 days, Monday–Sunday. */
-  days: Date[];
-  /** Share of habits completed across the week, 0–100. */
-  percentage: number;
-}
-
-/**
- * Builds mocked weekly-completion data for `year`. All weeks currently mock
- * to 0% until real completion data is wired in.
- */
-function createMockWeeklyCompletions(year: number): WeeklyCompletion[] {
-  return getWeeksOfYear(year).map((days, index) => ({
-    weekNumber: index + 1,
-    days,
-    percentage: 0,
-  }));
-}
 
 /** Props for {@link YearlyProgress}. */
 interface YearlyProgressProps {
@@ -57,7 +36,7 @@ export function YearlyProgress({
   onPreviousYear,
   onNextYear,
 }: YearlyProgressProps): JSX.Element {
-  const weeks = createMockWeeklyCompletions(year);
+  const { weeks } = useYearlyProgress(year, today);
   const todayKey = toDateKey(today);
   const isCurrentYear = year >= today.getFullYear();
 
