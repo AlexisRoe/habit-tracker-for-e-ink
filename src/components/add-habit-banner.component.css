@@ -23,3 +23,36 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+.add-habit-banner-editing {
+  gap: 5rem;
+}
+
+.add-habit-banner-input {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 1.25rem;
+  padding: 0.25rem 0;
+}
+
+.add-habit-banner-input:focus {
+  outline: none;
+}
+
+.add-habit-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.add-habit-banner-actions button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
