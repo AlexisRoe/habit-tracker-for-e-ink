@@ -8,10 +8,22 @@ import { getWeeksOfYear, isFutureDate, toDateKey } from "../utils/date-converter
 export interface WeeklyCompletion {
   /** ISO-ish week number within the year, 1-based (52 or 53 weeks total). */
   weekNumber: number;
-  /** The week's 7 days, Monday–Sunday. */
+  /** The week's 7 days, Monday–Sunday, including any that belong to the adjacent year. */
   days: Date[];
-  /** Average of the week's active habits' own completion shares, 0–100. */
+  /**
+   * Pooled completion percentage (0–100) across every (day, habit) point
+   * active within the target year for this week. `0` both when nothing was
+   * fulfilled and when there were no active habits — check
+   * {@link hasActiveHabits} to tell those apart.
+   */
   percentage: number;
+  /**
+   * Whether at least one habit was active on at least one in-year,
+   * non-future day of this week. `false` means there was nothing to track
+   * that week (renders as a hatched circle), distinct from `percentage === 0`
+   * meaning habits existed but nothing was fulfilled.
+   */
+  hasActiveHabits: boolean;
 }
 
 /** Return value of {@link useYearlyProgress}. */
@@ -23,15 +35,15 @@ export interface UseYearlyProgressReturn {
 }
 
 /**
- * For each Monday–Sunday week of `year`, computes the average per-habit
- * completion share. For every habit active at some point that week (on/after
- * its creation date, before its archival date if any), its own percentage is
- * the share of its active days (through today, for the current week) that
- * were checked off — so a habit created mid-week is 100% once it's fulfilled
- * every day from its creation through week's end, same as a habit active the
- * whole week. The week's percentage is then the plain average of the active
- * habits' individual percentages (a habit at 100% and one at 50% average to
- * 75%, regardless of how many active days each had).
+ * For each Monday–Sunday week of `year`, pools every active habit's daily
+ * points into one week-level completion share. Each (day, habit) pair where
+ * the habit was active on that day (created on/before it, not yet archived —
+ * archived on that same day still counts) contributes one point to the
+ * denominator, and one to the numerator if it was fulfilled; the week's
+ * `percentage` is `numerator / denominator * 100`, rounded. Days outside
+ * `year` (the trailing days of the prior year in week 1, or the leading days
+ * of the next year in the last week) and days after `today` are excluded
+ * from the pool entirely.
  *
  * Backed by Dexie/IndexedDB via `useLiveQuery`, so the returned `weeks`
  * update automatically as the underlying data changes.
@@ -59,41 +71,38 @@ export function useYearlyProgress(year: number, today: Date = new Date()): UseYe
       }
 
       return weeksOfYear.map((days, index) => {
-        const habitPercentages: number[] = [];
+        let totalPoints = 0;
+        let fulfilledPoints = 0;
+        let hasActiveHabits = false;
 
-        for (const habit of allHabits) {
-          if (habit.id == null) continue;
-          const habitCreatedKey = toDateKey(new Date(habit.createdAt));
-          const habitArchivedKey =
-            habit.archivedAt != null ? toDateKey(new Date(habit.archivedAt)) : undefined;
-          const fulfilledKeys = fulfilledKeysByHabitId.get(habit.id) ?? new Set<string>();
+        for (const day of days) {
+          if (day.getFullYear() !== year) continue;
 
-          let activeDays = 0;
-          let fulfilledDays = 0;
+          const dayKey = toDateKey(day);
 
-          for (const day of days) {
-            if (isFutureDate(day, today)) continue;
-
-            const dayKey = toDateKey(day);
+          for (const habit of allHabits) {
+            if (habit.id == null) continue;
+            const habitCreatedKey = toDateKey(new Date(habit.createdAt));
+            const habitArchivedKey =
+              habit.archivedAt != null ? toDateKey(new Date(habit.archivedAt)) : undefined;
             const isActive =
-              dayKey >= habitCreatedKey && (habitArchivedKey == null || dayKey < habitArchivedKey);
+              dayKey >= habitCreatedKey && (habitArchivedKey == null || dayKey <= habitArchivedKey);
             if (!isActive) continue;
 
-            activeDays += 1;
-            if (fulfilledKeys.has(dayKey)) fulfilledDays += 1;
-          }
+            // A habit active on this day marks the week as having something to
+            // track, even on future days (which don't yet contribute points).
+            hasActiveHabits = true;
+            if (isFutureDate(day, today)) continue;
 
-          if (activeDays > 0) habitPercentages.push((fulfilledDays / activeDays) * 100);
+            totalPoints += 1;
+            if (fulfilledKeysByHabitId.get(habit.id)?.has(dayKey)) fulfilledPoints += 1;
+          }
         }
 
         const percentage =
-          habitPercentages.length === 0
-            ? 0
-            : Math.round(
-                habitPercentages.reduce((sum, value) => sum + value, 0) / habitPercentages.length,
-              );
+          totalPoints === 0 ? 0 : Math.round((fulfilledPoints / totalPoints) * 100);
 
-        return { weekNumber: index + 1, days, percentage };
+        return { weekNumber: index + 1, days, percentage, hasActiveHabits };
       });
     },
     [year, toDateKey(today)],

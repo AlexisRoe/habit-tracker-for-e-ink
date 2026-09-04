@@ -32,7 +32,7 @@ export function convertDateToWeekRangeLabel(date: Date = new Date()): string {
       ? end.toLocaleDateString("en-US", { day: "numeric" })
       : end.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
-  return `${startLabel} - ${endLabel}`.toUpperCase();
+  return `${startLabel} - ${endLabel}`;
 }
 
 /**

@@ -25,7 +25,7 @@ export function YearlyView(): JSX.Element {
       </Page.Header>
       <Page.Content>
         <DateNav
-          label={`${year} — ${weeks.length} weeks`.toUpperCase()}
+          label={`${year} — ${weeks.length} Weeks`}
           center={String(year)}
           previousLabel="Previous year"
           nextLabel="Next year"

@@ -56,6 +56,16 @@
   background: #000000;
 }
 
+.yearly-progress-circle-hatched {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #000000,
+    #000000 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
 .yearly-progress-card-info .ink-text--mono {
   font-size: 0.8125rem;
   font-weight: normal;

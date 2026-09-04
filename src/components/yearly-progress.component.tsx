@@ -16,8 +16,9 @@ interface YearlyProgressProps {
 
 /**
  * Grid of the year's weeks (52 or 53, depending on the year), each shown as
- * a card with a week number, a date range, and a circle whose fill height
- * represents the share of habits completed that week (0–100%). The week
+ * a card with a week number, a date range, and a circle. When no habit was
+ * active that week the circle is hatched with diagonal lines; otherwise its
+ * fill height represents the share of habits completed (0–100%). The week
  * containing `today` is outlined.
  *
  * @example
@@ -47,11 +48,20 @@ export function YearlyProgress({
               }
               key={week.weekNumber}
             >
-              <div className="yearly-progress-circle" aria-hidden="true">
-                <div
-                  className="yearly-progress-circle-fill"
-                  style={{ height: `${week.percentage}%` }}
-                />
+              <div
+                className={
+                  week.hasActiveHabits
+                    ? "yearly-progress-circle"
+                    : "yearly-progress-circle yearly-progress-circle-hatched"
+                }
+                aria-hidden="true"
+              >
+                {week.hasActiveHabits && (
+                  <div
+                    className="yearly-progress-circle-fill"
+                    style={{ height: `${week.percentage}%` }}
+                  />
+                )}
               </div>
               <div className="yearly-progress-card-info">
                 <Text.Label>{`W${String(week.weekNumber).padStart(2, "0")}`}</Text.Label>

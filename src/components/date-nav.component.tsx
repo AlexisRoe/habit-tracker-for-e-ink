@@ -67,7 +67,9 @@ export function DateNav({
 
   return (
     <div className="date-nav">
-      <Text.Mono>{label ?? convertDateToWeekRangeLabel(date)}</Text.Mono>
+      <Button.Transparent onClick={() => {}}>
+        <Text.Mono>{label ?? convertDateToWeekRangeLabel(date)}</Text.Mono>
+      </Button.Transparent>
       <div className="date-nav-controls">
         <Button.Naked variant="arrowL" label={previousLabel} onClick={() => onPrevious?.()} />
         <Button.Transparent onClick={() => onDateClick?.()}>
