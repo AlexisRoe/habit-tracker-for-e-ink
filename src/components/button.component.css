@@ -53,6 +53,10 @@
   border: 0;
 }
 
+.button-habit-future .ink-btn[disabled] {
+  background-image: none;
+}
+
 .button-habit-locked .ink-btn {
   border: none;
   background-image: repeating-linear-gradient(

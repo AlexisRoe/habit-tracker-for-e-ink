@@ -96,6 +96,24 @@ describe("HabitTable", () => {
     expect(screen.queryByRole("button", { name: "Read on 2026-09-06" })).not.toBeInTheDocument();
   });
 
+  it("renders a future day as a disabled, unhatched, empty circle", () => {
+    render(<StatefulHabitTable initialHabits={[makeHabit(1, "Read", 0)]} />);
+
+    expect(screen.queryByRole("button", { name: "Read on 2026-09-06" })).not.toBeInTheDocument();
+
+    const futureCell = screen
+      .getAllByRole("button")
+      .filter((button) => button.closest("e-button")?.classList.contains("button-habit"))
+      .find(
+        (button) =>
+          button.hasAttribute("disabled") &&
+          !button.closest("e-button")?.classList.contains("button-habit-locked"),
+      );
+    expect(futureCell).toBeDisabled();
+    expect(futureCell?.closest("e-button")).not.toHaveClass("button-habit-filled");
+    expect(futureCell?.closest("e-button")).not.toHaveClass("button-habit-locked");
+  });
+
   it("can un-toggle an already-completed past day", () => {
     const habit: HabitWithCompletions = {
       ...makeHabit(1, "Read", 0),

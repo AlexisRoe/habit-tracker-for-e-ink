@@ -343,32 +343,47 @@ interface HabitButtonProps {
   completed: boolean;
   /**
    * Renders a fixed, non-interactive hatched circle with no accessible name,
-   * for a day the habit cannot be toggled on (in the future, or before the
-   * habit existed). Defaults to `false`.
+   * for a day the habit cannot be toggled on because it didn't exist yet.
+   * Defaults to `false`.
    */
   locked?: boolean;
+  /**
+   * Renders a fixed, non-interactive empty circle with no accessible name,
+   * for a day in the future. Defaults to `false`.
+   */
+  future?: boolean;
   /** Accessible label describing the habit and day. */
   label: string;
-  /** Called when the circle is clicked. Not called when {@link locked} is `true`. */
+  /** Called when the circle is clicked. Not called when {@link locked} or {@link future} is `true`. */
   onClick?: () => void;
 }
 
 /**
  * Circular toggle button used for a single habit/day cell. When `locked` is
  * `true` it renders a fixed hatched circle with no interaction, regardless of
- * `completed`. Otherwise it renders filled when `completed`, empty otherwise,
- * and is clickable either way (including to un-complete a filled day).
+ * `completed`. When `future` is `true` it renders a fixed empty circle with
+ * no interaction. Otherwise it renders filled when `completed`, empty
+ * otherwise, and is clickable either way (including to un-complete a filled
+ * day).
  *
  * @example
  * ```tsx
  * <Button.Habit completed={isCompleted} label="Read on 2026-09-01" onClick={toggle} />
  * ```
  */
-function HabitButton({ completed, locked = false, label, onClick }: HabitButtonProps): JSX.Element {
+function HabitButton({
+  completed,
+  locked = false,
+  future = false,
+  label,
+  onClick,
+}: HabitButtonProps): JSX.Element {
+  const inert = locked || future;
   const combinedClassName = [
     "button-habit",
-    !locked && completed ? "button-habit-filled" : undefined,
+    !inert && completed ? "button-habit-filled" : undefined,
     locked ? "button-habit-locked" : undefined,
+    future ? "button-habit-future" : undefined,
   ]
     .filter(Boolean)
     .join(" ");
@@ -377,10 +392,10 @@ function HabitButton({ completed, locked = false, label, onClick }: HabitButtonP
     <Button
       variant="secondary"
       className={combinedClassName}
-      onClick={locked ? undefined : onClick}
-      disabled={locked}
+      onClick={inert ? undefined : onClick}
+      disabled={inert}
     >
-      {locked ? null : <span className="visually-hidden">{label}</span>}
+      {inert ? null : <span className="visually-hidden">{label}</span>}
     </Button>
   );
 }

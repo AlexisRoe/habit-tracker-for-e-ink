@@ -31,8 +31,9 @@ interface HabitTableProps {
 /**
  * Table of active habits versus the days of a week. Each cell is a circle
  * that can be toggled between empty and filled for today or past days;
- * future days render as a fixed, non-interactive diagonally-hatched circle.
- * Clicking a habit's label turns its row into an editable black row for
+ * days before the habit existed render as a fixed, non-interactive
+ * diagonally-hatched circle, and future days render as a fixed,
+ * non-interactive empty circle. Clicking a habit's label turns its row into an editable black row for
  * renaming, reordering, or archiving the habit.
  *
  * @example
@@ -122,9 +123,10 @@ function HabitRow({
       </div>
       {weekDays.map((day) => {
         const dateKey = toDateKey(day);
-        // Locked (non-interactive) when the day is in the future, or before the habit
-        // was created; otherwise editable, filled if completed, empty otherwise.
-        const isLocked = isFutureDate(day, today) || isBeforeDate(day, new Date(habit.createdAt));
+        // Hatched and locked when before the habit existed; empty and locked when in
+        // the future; otherwise editable, filled if completed, empty otherwise.
+        const isFuture = isFutureDate(day, today);
+        const isLocked = isBeforeDate(day, new Date(habit.createdAt));
         const completed = habit.completions.has(dateKey);
 
         return (
@@ -132,6 +134,7 @@ function HabitRow({
             <Button.Habit
               completed={completed}
               locked={isLocked}
+              future={isFuture}
               label={`${habit.label} on ${dateKey}`}
               onClick={() => onToggleCompletion(dateKey)}
             />
