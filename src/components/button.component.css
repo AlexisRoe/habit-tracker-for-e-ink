@@ -1,0 +1,71 @@
+.create-button-disabled > button {
+  background: lightgray;
+  background-image: none;
+}
+
+.button-basic-reset {
+  min-height: 52px;
+}
+
+.button-small .ink-btn {
+  padding: 6px;
+  min-height: 32px;
+  min-width: 32px;
+}
+
+.button-transparent .ink-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  min-height: auto;
+  min-width: auto;
+}
+
+.button-transparent .ink-btn:active:not([disabled]):not([aria-disabled="true"]) {
+  background: none;
+  color: inherit;
+}
+
+.button-habit .ink-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  background: #ffffff;
+  padding: 0;
+  min-height: auto;
+  min-width: auto;
+}
+
+.button-habit-filled .ink-btn {
+  background: #000000;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.button-habit-future .ink-btn[disabled] {
+  background-image: none;
+  border: 1px solid #000000;
+}
+
+.button-habit-locked .ink-btn {
+  border: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #000000,
+    #000000 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  cursor: default;
+}

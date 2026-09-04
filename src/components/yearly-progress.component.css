@@ -1,0 +1,72 @@
+.yearly-progress {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.yearly-progress-grid {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.5rem;
+}
+
+.yearly-progress-card {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  background: #ffffff;
+  padding: 1rem 0.5rem;
+}
+
+.yearly-progress-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  white-space: nowrap;
+}
+
+.yearly-progress-card-current {
+  outline: 2px solid #000000;
+  outline-offset: -2px;
+}
+
+.yearly-progress-card-info .ink-text--label {
+  font-size: 0.8125rem;
+  font-weight: bold;
+}
+
+.yearly-progress-circle {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.yearly-progress-circle-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000000;
+}
+
+.yearly-progress-circle-hatched {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #000000,
+    #000000 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.yearly-progress-card-info .ink-text--mono {
+  font-size: 0.8125rem;
+  font-weight: normal;
+}

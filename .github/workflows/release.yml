@@ -1,0 +1,99 @@
+name: Release Version Bump
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  bump-version:
+    if: >
+      github.event.pull_request.merged == true &&
+      (
+        contains(github.event.pull_request.labels.*.name, 'version:major') ||
+        contains(github.event.pull_request.labels.*.name, 'version:minor') ||
+        contains(github.event.pull_request.labels.*.name, 'version:patch')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Determine bump type
+        id: bump
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          if echo "$LABELS" | grep -qw "version:major"; then
+            echo "type=major" >> "$GITHUB_OUTPUT"
+          elif echo "$LABELS" | grep -qw "version:minor"; then
+            echo "type=minor" >> "$GITHUB_OUTPUT"
+          else
+            echo "type=patch" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Bump version (no commit/tag yet)
+        id: version
+        run: |
+          NEW_VERSION=$(npm version ${{ steps.bump.outputs.type }} --no-git-tag-version)
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Open version bump PR
+        id: pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: bump version to ${{ steps.version.outputs.version }}"
+          title: "chore: release ${{ steps.version.outputs.version }}"
+          body: >
+            Automated version bump (${{ steps.bump.outputs.type }}) triggered by
+            #${{ github.event.pull_request.number }}.
+            Tag `${{ steps.version.outputs.version }}` will be pushed once this PR is merged.
+          branch: "release/${{ steps.version.outputs.version }}"
+          base: main
+          add-paths: |
+            package.json
+            package-lock.json
+          labels: release
+
+      - name: Summary
+        run: |
+          echo "Opened PR #${{ steps.pr.outputs.pull-request-number }} for ${{ steps.version.outputs.version }}." >> "$GITHUB_STEP_SUMMARY"
+          echo "Tag will be created by the tag-on-merge job once that PR is reviewed and merged." >> "$GITHUB_STEP_SUMMARY"
+
+  tag-release:
+    if: >
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'release/') &&
+      contains(github.event.pull_request.labels.*.name, 'release')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Create and push tag
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          VERSION="${HEAD_REF#release/}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$VERSION"
+          git push origin "$VERSION"

@@ -1,0 +1,47 @@
+.add-habit-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  margin-top: auto;
+  padding: 0.75rem 1.5rem;
+  background: #000000;
+  color: #ffffff;
+}
+
+.add-habit-banner-button .ink-btn {
+  color: #ffffff;
+}
+
+.add-habit-banner-editing {
+  gap: 5rem;
+}
+
+.add-habit-banner-input {
+  width: 100%;
+}
+
+.add-habit-banner-input .ink-control {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 1.25rem;
+  padding: 0.25rem 0;
+}
+
+.add-habit-banner-input .ink-control:focus {
+  outline: none;
+}
+
+.add-habit-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.add-habit-banner-action-button .ink-btn {
+  color: #ffffff;
+}
