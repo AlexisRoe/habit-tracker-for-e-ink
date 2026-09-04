@@ -6,7 +6,7 @@ import {
   getWeekDays,
   toDateKey,
 } from "../utils/date-converter.util";
-import { Icon } from "./icons.component";
+import { Button } from "./button.component";
 import { Text } from "./text.component";
 
 import "./date-nav.component.css";
@@ -47,28 +47,18 @@ export function DateNav({
 
   return (
     <div className="date-nav">
-      <Text.Mono className="date-nav-week">{convertDateToWeekRangeLabel(date)}</Text.Mono>
+      <Text.Mono>{convertDateToWeekRangeLabel(date)}</Text.Mono>
       <div className="date-nav-controls">
-        <button
-          type="button"
-          className="date-nav-arrow"
-          onClick={onPrevious}
-          aria-label="Previous week"
-        >
-          <Icon variant="arrowL" label="Previous week" />
-        </button>
-        <button type="button" className="date-nav-date" onClick={onDateClick}>
+        <Button.Naked variant="arrowL" label="Previous week" onClick={() => onPrevious?.()} />
+        <Button.Transparent onClick={() => onDateClick?.()}>
           <Text.Mono>{convertDateToTitle(today)}</Text.Mono>
-        </button>
-        <button
-          type="button"
-          className="date-nav-arrow"
-          onClick={onNext}
+        </Button.Transparent>
+        <Button.Naked
+          variant="arrowR"
+          label="Next week"
+          onClick={() => onNext?.()}
           disabled={isCurrentOrFutureWeek}
-          aria-label="Next week"
-        >
-          <Icon variant="arrowR" label="Next week" />
-        </button>
+        />
       </div>
     </div>
   );

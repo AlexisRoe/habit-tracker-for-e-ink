@@ -13,7 +13,7 @@
   min-width: 32px;
 }
 
-.button-naked .ink-btn {
+.button-transparent .ink-btn {
   background: none;
   border: none;
   padding: 4px;
@@ -21,7 +21,7 @@
   min-width: auto;
 }
 
-.button-naked .ink-btn:active:not([disabled]):not([aria-disabled="true"]) {
+.button-transparent .ink-btn:active:not([disabled]):not([aria-disabled="true"]) {
   background: none;
   color: inherit;
 }

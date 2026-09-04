@@ -38,6 +38,17 @@ describe("Button", () => {
 
     expect(onClick).toHaveBeenCalled();
   });
+
+  it("renders the transparent variant as a secondary e-button with the transparent class", () => {
+    const { container } = render(
+      <Button variant="transparent" onClick={vi.fn()}>
+        Click me
+      </Button>,
+    );
+
+    expect(container.querySelector("e-button")).toHaveAttribute("variant", "secondary");
+    expect(container.querySelector("e-button")).toHaveClass("button-transparent");
+  });
 });
 
 describe("Button.Cancel", () => {
@@ -169,7 +180,7 @@ describe("Button.Naked", () => {
       <Button.Naked variant="check" label="Save habit" onClick={onClick} />,
     );
 
-    expect(container.querySelector("e-button")).toHaveClass("button-naked");
+    expect(container.querySelector("e-button")).toHaveClass("button-transparent");
     expect(container.querySelector("e-icon")).toHaveAttribute("name", "check");
     expect(container.querySelector("e-icon")).toHaveAttribute("label", "Save habit");
 
@@ -183,7 +194,34 @@ describe("Button.Naked", () => {
       <Button.Naked variant="plus" label="Add habit" onClick={vi.fn()} className="custom-class" />,
     );
 
-    expect(container.querySelector("e-button")).toHaveClass("button-naked");
+    expect(container.querySelector("e-button")).toHaveClass("button-transparent");
+    expect(container.querySelector("e-button")).toHaveClass("custom-class");
+  });
+});
+
+describe("Button.Transparent", () => {
+  it("renders its children with the transparent class and calls onClick when clicked", () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <Button.Transparent onClick={onClick}>Thu, Sep 3</Button.Transparent>,
+    );
+
+    expect(screen.getByText("Thu, Sep 3")).toBeInTheDocument();
+    expect(container.querySelector("e-button")).toHaveClass("button-transparent");
+
+    click(container);
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it("merges a custom class name with the transparent class", () => {
+    const { container } = render(
+      <Button.Transparent onClick={vi.fn()} className="custom-class">
+        Thu, Sep 3
+      </Button.Transparent>,
+    );
+
+    expect(container.querySelector("e-button")).toHaveClass("button-transparent");
     expect(container.querySelector("e-button")).toHaveClass("custom-class");
   });
 });

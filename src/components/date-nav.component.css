@@ -17,21 +17,6 @@
   gap: 2rem;
 }
 
-.date-nav-arrow,
-.date-nav-date {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  color: #000000;
-  cursor: pointer;
-}
-
-.date-nav-arrow:disabled {
-  color: #cccccc;
-  cursor: default;
-}
-
 .date-nav-date .ink-text--mono {
   font-size: 1.25rem;
   font-weight: 300;

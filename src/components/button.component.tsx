@@ -13,8 +13,8 @@ interface BaseButtonProps {
 interface ButtonProps {
   /** Button content — usually text and/or an {@link Icon}. */
   children: ReactNode;
-  /** Visual style. Defaults to `'primary'`. */
-  variant?: "primary" | "secondary";
+  /** Visual style. `'transparent'` strips the background/border, showing only its content. Defaults to `'primary'`. */
+  variant?: "primary" | "secondary" | "transparent";
   /** Button size. Defaults to `'default'`. */
   size?: "default" | "small";
   /** Called when the button is clicked. */
@@ -50,12 +50,23 @@ export function Button({
   onClick,
   disabled = false,
 }: ButtonProps): JSX.Element {
+  const isTransparent = variant === "transparent";
   const combinedClassName =
-    [className, size === "small" ? "button-small" : undefined].filter(Boolean).join(" ") ||
-    undefined;
+    [
+      className,
+      isTransparent ? "button-transparent" : undefined,
+      size === "small" ? "button-small" : undefined,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined;
 
   return (
-    <e-button className={combinedClassName} variant={variant} onClick={onClick} disabled={disabled}>
+    <e-button
+      className={combinedClassName}
+      variant={isTransparent ? "secondary" : variant}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </e-button>
   );
@@ -266,6 +277,8 @@ interface NakedButtonProps extends BaseButtonProps {
   size?: IconProps["size"];
   /** Extra class name(s) applied to the underlying button. */
   className?: string;
+  /** Disables the button when `true`. Defaults to `false`. */
+  disabled?: boolean;
 }
 
 /**
@@ -277,12 +290,49 @@ interface NakedButtonProps extends BaseButtonProps {
  * <Button.Naked variant="check" label="Save habit" onClick={handleAccept} />
  * ```
  */
-function NakedButton({ onClick, variant, label, size, className }: NakedButtonProps): JSX.Element {
-  const combinedClassName = ["button-naked", className].filter(Boolean).join(" ");
-
+function NakedButton({
+  onClick,
+  variant,
+  label,
+  size,
+  className,
+  disabled = false,
+}: NakedButtonProps): JSX.Element {
   return (
-    <Button variant="secondary" className={combinedClassName} onClick={onClick}>
+    <Button variant="transparent" className={className} onClick={onClick} disabled={disabled}>
       <Icon variant={variant} label={label} size={size} />
+    </Button>
+  );
+}
+
+/** Props for {@link Button.Transparent}. */
+interface TransparentButtonProps extends BaseButtonProps {
+  /** Button content, usually text. */
+  children: ReactNode;
+  /** Extra class name(s) applied to the underlying button. */
+  className?: string;
+  /** Disables the button when `true`. Defaults to `false`. */
+  disabled?: boolean;
+}
+
+/**
+ * Text button with no background or border, used where a minimal control
+ * showing plain content (usually text) is needed.
+ *
+ * @example
+ * ```tsx
+ * <Button.Transparent onClick={onDateClick}>{convertDateToTitle(today)}</Button.Transparent>
+ * ```
+ */
+function TransparentButton({
+  onClick,
+  children,
+  className,
+  disabled = false,
+}: TransparentButtonProps): JSX.Element {
+  return (
+    <Button variant="transparent" className={className} onClick={onClick} disabled={disabled}>
+      {children}
     </Button>
   );
 }
@@ -297,3 +347,4 @@ Button.Move = MoveButton;
 Button.Detail = DetailButton;
 Button.Back = BackButton;
 Button.Naked = NakedButton;
+Button.Transparent = TransparentButton;
