@@ -2,7 +2,9 @@ import { type JSX, useState } from "react";
 
 import type { HabitWithCompletions } from "../hooks/use-habits.hook";
 import { isBeforeDate, isFutureDate, toDateKey } from "../utils/date-converter.util";
-import { Icon } from "./icons.component";
+import { Button } from "./button.component";
+import { Input } from "./input.component";
+import { Text } from "./text.component";
 
 import "./habit-table.component.css";
 
@@ -56,10 +58,8 @@ export function HabitTable({
         <div className="habit-table-label-col" />
         {weekDays.map((day) => (
           <div className="habit-table-day-col" key={toDateKey(day)}>
-            <span className="habit-table-day-abbr">
-              {DAY_ABBREVIATIONS[(day.getDay() + 6) % 7]}
-            </span>
-            <span className="habit-table-day-num">{day.getDate()}</span>
+            <Text.Label>{DAY_ABBREVIATIONS[(day.getDay() + 6) % 7]}</Text.Label>
+            <Text.Mono>{String(day.getDate())}</Text.Mono>
           </div>
         ))}
       </div>
@@ -115,28 +115,24 @@ function HabitRow({
 }: HabitRowProps): JSX.Element {
   return (
     <div className="habit-table-row">
-      <button
-        type="button"
-        className="habit-table-label-col habit-table-label-button"
-        onClick={onLabelClick}
-      >
-        <span className="habit-table-label">{habit.label}</span>
-      </button>
+      <div className="habit-table-label-col">
+        <Button.Transparent onClick={onLabelClick} className="habit-table-label-button">
+          <Text className="habit-table-label">{habit.label}</Text>
+        </Button.Transparent>
+      </div>
       {weekDays.map((day) => {
         const dateKey = toDateKey(day);
-
-        if (isFutureDate(day, today) || isBeforeDate(day, new Date(habit.createdAt))) {
-          return <div className="habit-table-day-col habit-cell habit-cell-future" key={dateKey} />;
-        }
-
+        // Locked (non-interactive) when the day is in the future, or before the habit
+        // was created; otherwise editable, filled if completed, empty otherwise.
+        const isLocked = isFutureDate(day, today) || isBeforeDate(day, new Date(habit.createdAt));
         const completed = habit.completions.has(dateKey);
+
         return (
           <div className="habit-table-day-col" key={dateKey}>
-            <button
-              type="button"
-              className={completed ? "habit-cell habit-cell-filled" : "habit-cell"}
-              aria-pressed={completed}
-              aria-label={`${habit.label} on ${dateKey}`}
+            <Button.Habit
+              completed={completed}
+              locked={isLocked}
+              label={`${habit.label} on ${dateKey}`}
               onClick={() => onToggleCompletion(dateKey)}
             />
           </div>
@@ -171,36 +167,34 @@ function HabitEditRow({
 
   return (
     <div className="habit-table-row habit-table-row-editing">
-      <input
+      <Input
         className="habit-table-edit-input"
-        type="text"
-        value={draftLabel}
-        onChange={(event) => setDraftLabel(event.target.value)}
-        aria-label="Habit label"
+        ariaLabel="Habit label"
+        initialValue={draftLabel}
+        onDebouncedChange={setDraftLabel}
+        debounceMs={0}
       />
       <div className="habit-table-edit-actions">
         <div className="habit-table-edit-action-group">
-          <button type="button" onClick={onMoveUp} disabled={!canMoveUp} aria-label="Move up">
-            <span className="habit-table-icon-rotate-up">
-              <Icon variant="chevR" label="" />
-            </span>
-          </button>
-          <button type="button" onClick={onMoveDown} disabled={!canMoveDown} aria-label="Move down">
-            <span className="habit-table-icon-rotate-down">
-              <Icon variant="chevR" label="" />
-            </span>
-          </button>
+          <Button.Naked
+            variant="chevR"
+            label="Move up"
+            onClick={onMoveUp}
+            disabled={!canMoveUp}
+            className="habit-table-icon-rotate-up"
+          />
+          <Button.Naked
+            variant="chevR"
+            label="Move down"
+            onClick={onMoveDown}
+            disabled={!canMoveDown}
+            className="habit-table-icon-rotate-down"
+          />
         </div>
         <div className="habit-table-edit-action-group">
-          <button type="button" onClick={() => onSave(draftLabel)} aria-label="Save habit">
-            <Icon variant="check" label="" />
-          </button>
-          <button type="button" onClick={onCancel} aria-label="Cancel editing">
-            <Icon variant="close" label="" />
-          </button>
-          <button type="button" onClick={onArchive} aria-label="Archive habit">
-            <Icon variant="trash" label="" />
-          </button>
+          <Button.Naked variant="check" label="Save habit" onClick={() => onSave(draftLabel)} />
+          <Button.Naked variant="close" label="Cancel editing" onClick={onCancel} />
+          <Button.Naked variant="trash" label="Archive habit" onClick={onArchive} />
         </div>
       </div>
     </div>

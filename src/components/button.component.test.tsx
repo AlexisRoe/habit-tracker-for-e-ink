@@ -226,6 +226,53 @@ describe("Button.Transparent", () => {
   });
 });
 
+describe("Button.Habit", () => {
+  it("renders an empty circle and calls onClick when not completed or locked", () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <Button.Habit completed={false} label="Read on 2026-09-03" onClick={onClick} />,
+    );
+
+    expect(container.querySelector("e-button")).not.toHaveClass("button-habit-filled");
+    expect(container.querySelector("e-button")).not.toHaveClass("button-habit-locked");
+    expect(container.querySelector("e-button")).not.toBeDisabled();
+
+    click(container);
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it("renders a filled circle and still calls onClick when completed and not locked", () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <Button.Habit completed={true} label="Read on 2026-09-03" onClick={onClick} />,
+    );
+
+    expect(container.querySelector("e-button")).toHaveClass("button-habit-filled");
+    expect(container.querySelector("e-button")).not.toBeDisabled();
+
+    click(container);
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it("renders a locked, disabled circle and never calls onClick, even when completed", () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <Button.Habit completed={true} locked label="Read on 2026-09-05" onClick={onClick} />,
+    );
+
+    expect(container.querySelector("e-button")).toHaveClass("button-habit-locked");
+    expect(container.querySelector("e-button")).not.toHaveClass("button-habit-filled");
+    expect(container.querySelector("e-button")).toBeDisabled();
+
+    const button = container.querySelector("e-button");
+    button?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+});
+
 describe("Button.Back", () => {
   it('renders the "Back" label and calls onClick when clicked', () => {
     const onClick = vi.fn();

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -12,6 +12,12 @@ const weekDays = getWeekDays(new Date(2026, 8, 3));
 
 function makeHabit(id: number, label: string, order: number): HabitWithCompletions {
   return { id, label, order, createdAt: 0, completions: new Set() };
+}
+
+function getHabitLabelInput(container: HTMLElement): HTMLInputElement {
+  const input = container.querySelector('input[aria-label="Habit label"]');
+  expect(input).not.toBeNull();
+  return input as HTMLInputElement;
 }
 
 /** Stateful wrapper so interaction tests (move/rename/toggle) reflect back into the table. */
@@ -74,13 +80,14 @@ describe("HabitTable", () => {
     render(<StatefulHabitTable initialHabits={[makeHabit(1, "Read", 0)]} />);
 
     const cell = screen.getByRole("button", { name: "Read on 2026-09-01" });
-    expect(cell).toHaveAttribute("aria-pressed", "false");
+    const cellHost = cell.closest("e-button");
+    expect(cellHost).not.toHaveClass("button-habit-filled");
 
     fireEvent.click(cell);
-    expect(cell).toHaveAttribute("aria-pressed", "true");
+    expect(cellHost).toHaveClass("button-habit-filled");
 
     fireEvent.click(cell);
-    expect(cell).toHaveAttribute("aria-pressed", "false");
+    expect(cellHost).not.toHaveClass("button-habit-filled");
   });
 
   it("does not render a clickable cell for future days", () => {
@@ -89,17 +96,51 @@ describe("HabitTable", () => {
     expect(screen.queryByRole("button", { name: "Read on 2026-09-06" })).not.toBeInTheDocument();
   });
 
-  it("turns the row into an editable row when the label is clicked, and supports rename/move/archive", () => {
-    render(
+  it("can un-toggle an already-completed past day", () => {
+    const habit: HabitWithCompletions = {
+      ...makeHabit(1, "Read", 0),
+      completions: new Set(["2026-09-01"]),
+    };
+    render(<StatefulHabitTable initialHabits={[habit]} />);
+
+    const cell = screen.getByRole("button", { name: "Read on 2026-09-01" });
+    const cellHost = cell.closest("e-button");
+    expect(cellHost).toHaveClass("button-habit-filled");
+    expect(cellHost).not.toBeDisabled();
+
+    fireEvent.click(cell);
+
+    expect(cellHost).not.toHaveClass("button-habit-filled");
+  });
+
+  it("locks a day before the habit's creation date, even if it has a stray completion", () => {
+    const habit: HabitWithCompletions = {
+      ...makeHabit(1, "Read", 0),
+      createdAt: new Date(2026, 8, 3).getTime(),
+      completions: new Set(["2026-09-01"]),
+    };
+    render(<StatefulHabitTable initialHabits={[habit]} />);
+
+    expect(screen.queryByRole("button", { name: "Read on 2026-09-01" })).not.toBeInTheDocument();
+
+    const lockedCell = screen
+      .getAllByRole("button")
+      .find((button) => button.closest("e-button")?.classList.contains("button-habit-locked"));
+    expect(lockedCell).toBeDisabled();
+  });
+
+  it("turns the row into an editable row when the label is clicked, and supports rename/move/archive", async () => {
+    const { container } = render(
       <StatefulHabitTable initialHabits={[makeHabit(1, "Read", 0), makeHabit(2, "Move", 1)]} />,
     );
 
     fireEvent.click(screen.getByText("Read"));
 
-    const input = screen.getByLabelText("Habit label");
+    const input = getHabitLabelInput(container);
     expect(input).toHaveValue("Read");
 
-    fireEvent.change(input, { target: { value: "Reading" } });
+    fireEvent.input(input, { target: { value: "Reading" } });
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
     fireEvent.click(screen.getByRole("button", { name: "Save habit" }));
 
     expect(screen.getByText("Reading")).toBeInTheDocument();
@@ -118,13 +159,14 @@ describe("HabitTable", () => {
     expect(screen.queryByText("Reading")).not.toBeInTheDocument();
   });
 
-  it("discards the draft label when editing is cancelled", () => {
-    render(<StatefulHabitTable initialHabits={[makeHabit(1, "Read", 0)]} />);
+  it("discards the draft label when editing is cancelled", async () => {
+    const { container } = render(<StatefulHabitTable initialHabits={[makeHabit(1, "Read", 0)]} />);
 
     fireEvent.click(screen.getByText("Read"));
 
-    const input = screen.getByLabelText("Habit label");
-    fireEvent.change(input, { target: { value: "Something else" } });
+    const input = getHabitLabelInput(container);
+    fireEvent.input(input, { target: { value: "Something else" } });
+    await act(() => new Promise((resolve) => setTimeout(resolve, 0)));
     fireEvent.click(screen.getByRole("button", { name: "Cancel editing" }));
 
     expect(screen.getByText("Read")).toBeInTheDocument();

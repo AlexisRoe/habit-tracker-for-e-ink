@@ -10,7 +10,7 @@
   grid-template-columns: minmax(2.5rem, auto) repeat(7, 3.5rem);
   align-items: center;
   column-gap: 1rem;
-  padding: 1rem 0;
+  padding: 0.25rem 0;
 }
 
 .habit-table-header {
@@ -24,17 +24,6 @@
   justify-self: center;
 }
 
-.habit-table-header .habit-table-day-abbr {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-weight: normal;
-}
-
-.habit-table-header .habit-table-day-num {
-  font-size: 1.25rem;
-}
-
 .habit-table-label-col {
   display: flex;
   align-items: baseline;
@@ -42,49 +31,15 @@
   min-width: 0;
 }
 
-.habit-table-label-button {
-  background: none;
-  border: none;
-  color: #000000;
-  cursor: pointer;
+.habit-table-label-button .ink-btn {
+  justify-content: flex-start;
   text-align: left;
-  padding: 0;
-  font: inherit;
 }
 
 .habit-table-label {
-  font-size: 1.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.habit-cell {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 1px solid #000000;
-  background: #ffffff;
-  padding: 0;
-  cursor: pointer;
-  justify-self: center;
-}
-
-.habit-cell-filled {
-  background: #000000;
-}
-
-.habit-cell-future {
-  border: none;
-  background-image: repeating-linear-gradient(
-    45deg,
-    #000000,
-    #000000 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  border-radius: 50%;
-  cursor: default;
 }
 
 .habit-table-row-editing {
@@ -92,10 +47,10 @@
   column-gap: 5rem;
   background: #000000;
   color: #ffffff;
-  padding: 1.5rem 1rem;
+  padding: 0.75rem 1rem;
 }
 
-.habit-table-edit-input {
+.habit-table-edit-input .ink-control {
   width: 100%;
   background: none;
   border: none;
@@ -105,7 +60,7 @@
   padding: 0.25rem 0;
 }
 
-.habit-table-edit-input:focus {
+.habit-table-edit-input .ink-control:focus {
   outline: none;
 }
 
@@ -122,26 +77,14 @@
   gap: 1rem;
 }
 
-.habit-table-edit-actions button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
+.habit-table-edit-actions .ink-btn {
   color: #ffffff;
-  cursor: pointer;
-}
-
-.habit-table-edit-actions button:disabled {
-  opacity: 0.3;
-  cursor: default;
 }
 
 .habit-table-icon-rotate-up {
-  display: inline-flex;
   transform: rotate(-90deg);
 }
 
 .habit-table-icon-rotate-down {
-  display: inline-flex;
   transform: rotate(90deg);
 }

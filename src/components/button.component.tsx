@@ -337,6 +337,54 @@ function TransparentButton({
   );
 }
 
+/** Props for {@link Button.Habit}. */
+interface HabitButtonProps {
+  /** Whether the day is completed for this habit. Renders a filled circle when `true`. Ignored when {@link locked} is `true`. */
+  completed: boolean;
+  /**
+   * Renders a fixed, non-interactive hatched circle with no accessible name,
+   * for a day the habit cannot be toggled on (in the future, or before the
+   * habit existed). Defaults to `false`.
+   */
+  locked?: boolean;
+  /** Accessible label describing the habit and day. */
+  label: string;
+  /** Called when the circle is clicked. Not called when {@link locked} is `true`. */
+  onClick?: () => void;
+}
+
+/**
+ * Circular toggle button used for a single habit/day cell. When `locked` is
+ * `true` it renders a fixed hatched circle with no interaction, regardless of
+ * `completed`. Otherwise it renders filled when `completed`, empty otherwise,
+ * and is clickable either way (including to un-complete a filled day).
+ *
+ * @example
+ * ```tsx
+ * <Button.Habit completed={isCompleted} label="Read on 2026-09-01" onClick={toggle} />
+ * ```
+ */
+function HabitButton({ completed, locked = false, label, onClick }: HabitButtonProps): JSX.Element {
+  const combinedClassName = [
+    "button-habit",
+    !locked && completed ? "button-habit-filled" : undefined,
+    locked ? "button-habit-locked" : undefined,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <Button
+      variant="secondary"
+      className={combinedClassName}
+      onClick={locked ? undefined : onClick}
+      disabled={locked}
+    >
+      {locked ? null : <span className="visually-hidden">{label}</span>}
+    </Button>
+  );
+}
+
 Button.Cancel = CancelButton;
 Button.Create = CreateButton;
 Button.Delete = DeleteButton;
@@ -348,3 +396,4 @@ Button.Detail = DetailButton;
 Button.Back = BackButton;
 Button.Naked = NakedButton;
 Button.Transparent = TransparentButton;
+Button.Habit = HabitButton;

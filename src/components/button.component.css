@@ -25,3 +25,42 @@
   background: none;
   color: inherit;
 }
+
+.button-habit .ink-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  background: #ffffff;
+  padding: 0;
+  min-height: auto;
+  min-width: auto;
+}
+
+.button-habit-filled .ink-btn {
+  background: #000000;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.button-habit-locked .ink-btn {
+  border: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #000000,
+    #000000 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  cursor: default;
+}
