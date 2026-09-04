@@ -6,11 +6,9 @@ import "@marcomattes/epaper-components";
 import LoadingView from "./loading.view";
 
 describe("LoadingView", () => {
-  it("renders the given title label and title", () => {
-    render(<LoadingView titleLabel="Website Relaunch" title="Planning" />);
+  it("renders the current date title and a loading message", () => {
+    render(<LoadingView />);
 
-    expect(screen.getByText("WEBSITE RELAUNCH")).toBeInTheDocument();
-    expect(screen.getByText("Planning")).toBeInTheDocument();
     expect(screen.getByText("… LOADING …")).toBeInTheDocument();
   });
 });

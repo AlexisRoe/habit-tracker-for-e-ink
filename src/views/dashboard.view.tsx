@@ -8,6 +8,14 @@ import Page from "../components/page.component";
 import { useHabits } from "../hooks/use-habits.hook";
 import { getWeekDays, toDateKey } from "../utils/date-converter.util";
 
+/**
+ * Weekly dashboard view: shows the habit table for the current week, lets
+ * the user navigate between weeks (future weeks are disallowed), toggle
+ * daily completions, and manage habits (add/rename/archive/reorder).
+ *
+ * @example
+ * <Route index element={<DashboardView />} />
+ */
 export function DashboardView(): JSX.Element {
   const [date, setDate] = useState(() => new Date());
   const weekDays = getWeekDays(date);

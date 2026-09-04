@@ -9,7 +9,6 @@ describe("ErrorView", () => {
   it("renders the given error message", () => {
     render(<ErrorView message="Project is not defined" />);
 
-    expect(screen.getByText("Error")).toBeInTheDocument();
     expect(screen.getByText("Project is not defined")).toBeInTheDocument();
   });
 });

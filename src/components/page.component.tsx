@@ -57,18 +57,38 @@ function PageContent({ children }: PageContentProps) {
   return <div className="page-content">{children}</div>;
 }
 
+/** Props for {@link Page.Title}. */
 interface PageTitleProps {
+  /** Title text to render. Defaults to `"HabitTracker"`. */
   children?: string;
 }
 
+/**
+ * App/page title, rendered as a large heading. Defaults to `"HabitTracker"`
+ * when no children are given.
+ *
+ * @example
+ * <Page.Title /> // renders "HabitTracker"
+ * <Page.Title>Year</Page.Title>
+ */
 function PageTitle({ children = "HabitTracker" }: PageTitleProps): JSX.Element {
   return <Title size="2">{children}</Title>;
 }
 
+/** Props for {@link Page.Nav}. */
 interface PageNavigationProps {
+  /** Extra content rendered after the built-in Week/Year links. */
   children?: ReactNode;
 }
 
+/**
+ * Primary navigation for a `Page`, with links between the weekly ("Week")
+ * and yearly ("Year") views. Accepts additional children to render alongside
+ * the built-in links.
+ *
+ * @example
+ * <Page.Nav />
+ */
 function PageNavigation(props: PageNavigationProps): JSX.Element {
   return (
     <nav className="page-nav">

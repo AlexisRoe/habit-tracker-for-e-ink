@@ -1,3 +1,9 @@
+/**
+ * Formats `date` as a short human-readable title, e.g. `"Thu, Sep 4"`.
+ *
+ * @example
+ * convertDateToTitle(new Date(2026, 8, 4)); // "Thu, Sep 4"
+ */
 export function convertDateToTitle(date: Date = new Date()): string {
   return date.toLocaleDateString("en-US", {
     weekday: "short",
@@ -9,6 +15,9 @@ export function convertDateToTitle(date: Date = new Date()): string {
 /**
  * Formats the Monday–Sunday week containing `date` as an uppercase range
  * label, e.g. `"AUG 31 - SEP 6"`.
+ *
+ * @example
+ * convertDateToWeekRangeLabel(new Date(2026, 8, 4)); // "AUG 31 - SEP 6"
  */
 export function convertDateToWeekRangeLabel(date: Date = new Date()): string {
   const diffToMonday = (date.getDay() + 6) % 7;
@@ -28,6 +37,9 @@ export function convertDateToWeekRangeLabel(date: Date = new Date()): string {
 
 /**
  * Returns the seven `Date`s (Monday–Sunday) of the week containing `date`.
+ *
+ * @example
+ * getWeekDays(new Date(2026, 8, 4)); // [Mon Aug 31, ..., Sun Sep 6]
  */
 export function getWeekDays(date: Date = new Date()): Date[] {
   const diffToMonday = (date.getDay() + 6) % 7;
@@ -44,6 +56,9 @@ export function getWeekDays(date: Date = new Date()): Date[] {
 /**
  * Formats `date` as a local `"YYYY-MM-DD"` key, suitable for use as a map key
  * independent of time-of-day.
+ *
+ * @example
+ * toDateKey(new Date(2026, 8, 4)); // "2026-09-04"
  */
 export function toDateKey(date: Date): string {
   const year = date.getFullYear();
@@ -54,6 +69,9 @@ export function toDateKey(date: Date): string {
 
 /**
  * Whether `date` falls strictly after today (time-of-day ignored).
+ *
+ * @example
+ * isFutureDate(new Date(2099, 0, 1)); // true
  */
 export function isFutureDate(date: Date, today: Date = new Date()): boolean {
   return toDateKey(date) > toDateKey(today);
@@ -61,6 +79,9 @@ export function isFutureDate(date: Date, today: Date = new Date()): boolean {
 
 /**
  * Whether `date` falls strictly before `referenceDate` (time-of-day ignored).
+ *
+ * @example
+ * isBeforeDate(new Date(2020, 0, 1), new Date(2026, 0, 1)); // true
  */
 export function isBeforeDate(date: Date, referenceDate: Date): boolean {
   return toDateKey(date) < toDateKey(referenceDate);
@@ -70,6 +91,9 @@ export function isBeforeDate(date: Date, referenceDate: Date): boolean {
  * Returns the Monday–Sunday weeks of `year`, each as its 7 `Date`s, starting
  * from the Monday of the week containing January 1st and continuing through
  * the week containing December 31st (52 or 53 weeks, depending on the year).
+ *
+ * @example
+ * getWeeksOfYear(2026); // [[Mon Dec 29 2025, ...], ..., [..., Sun Jan 3 2027]]
  */
 export function getWeeksOfYear(year: number): Date[][] {
   const [firstMonday] = getWeekDays(new Date(year, 0, 1));
