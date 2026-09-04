@@ -4,41 +4,8 @@
   width: 100%;
 }
 
-.yearly-progress-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  width: 100%;
-  padding-bottom: 3rem;
-}
-
-.yearly-progress-header .ink-text--mono {
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
-.yearly-progress-controls {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.yearly-progress-arrow {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  color: #000000;
-  cursor: pointer;
-}
-
-.yearly-progress-arrow:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
 .yearly-progress-grid {
+  margin-top: 3rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
   gap: 1rem;

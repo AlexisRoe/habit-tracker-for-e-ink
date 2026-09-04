@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
 import "@marcomattes/epaper-components";
 
@@ -12,37 +12,6 @@ describe("YearlyProgress", () => {
     expect(await screen.findByText("W01")).toBeInTheDocument();
     expect(screen.getByText("W52")).toBeInTheDocument();
     expect(screen.getByText("Dec 29 – Jan 4")).toBeInTheDocument();
-  });
-
-  it("navigates to the previous/next year via the arrow buttons", async () => {
-    const onPreviousYear = vi.fn();
-    const onNextYear = vi.fn();
-    render(
-      <YearlyProgress
-        year={2025}
-        today={new Date(2026, 8, 4)}
-        onPreviousYear={onPreviousYear}
-        onNextYear={onNextYear}
-      />,
-    );
-
-    await screen.findByText("W01");
-
-    fireEvent.click(screen.getByRole("button", { name: "Previous year" }));
-    fireEvent.click(screen.getByRole("button", { name: "Next year" }));
-
-    expect(onPreviousYear).toHaveBeenCalledTimes(1);
-    expect(onNextYear).toHaveBeenCalledTimes(1);
-  });
-
-  it("disables the next-year arrow once the current year is displayed", async () => {
-    const today = new Date(2026, 8, 4);
-    render(<YearlyProgress year={2026} today={today} />);
-    expect(screen.getByRole("button", { name: "Next year" })).toBeDisabled();
-
-    render(<YearlyProgress year={2025} today={today} />);
-    await screen.findByText("W01");
-    expect(screen.getAllByRole("button", { name: "Next year" })[1]).not.toBeDisabled();
   });
 
   it("outlines the card for the week containing today", async () => {

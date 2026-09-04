@@ -56,4 +56,30 @@ describe("DateNav", () => {
 
     expect(screen.getByRole("button", { name: "Next week" })).toBeEnabled();
   });
+
+  it("supports overriding the label, center content, arrow labels and next-disabled state", () => {
+    const onPrevious = vi.fn();
+    const onNext = vi.fn();
+
+    render(
+      <DateNav
+        label="2026 — 52 WEEKS"
+        center="2026"
+        previousLabel="Previous year"
+        nextLabel="Next year"
+        nextDisabled
+        onPrevious={onPrevious}
+        onNext={onNext}
+      />,
+    );
+
+    expect(screen.getByText("2026 — 52 WEEKS")).toBeInTheDocument();
+    expect(screen.getByText("2026")).toBeInTheDocument();
+
+    const nextButton = screen.getByRole("button", { name: "Next year" });
+    expect(nextButton).toBeDisabled();
+
+    fireEvent.click(screen.getByRole("button", { name: "Previous year" }));
+    expect(onPrevious).toHaveBeenCalledTimes(1);
+  });
 });

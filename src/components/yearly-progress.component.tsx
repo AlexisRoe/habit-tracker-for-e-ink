@@ -2,8 +2,6 @@ import type { JSX } from "react";
 
 import { useYearlyProgress } from "../hooks/use-yearly-progress.hook";
 import { formatWeekRange, toDateKey } from "../utils/date-converter.util";
-import { Icon } from "./icons.component";
-import { Text } from "./text.component";
 
 import "./yearly-progress.component.css";
 
@@ -13,10 +11,6 @@ interface YearlyProgressProps {
   year?: number;
   /** Reference date used to highlight the current week. Defaults to today. */
   today?: Date;
-  /** Called when the previous-year arrow is clicked. */
-  onPreviousYear?: () => void;
-  /** Called when the next-year arrow is clicked. */
-  onNextYear?: () => void;
 }
 
 /**
@@ -27,46 +21,18 @@ interface YearlyProgressProps {
  *
  * @example
  * ```tsx
- * <YearlyProgress />
+ * <YearlyProgress year={2026} />
  * ```
  */
 export function YearlyProgress({
   year = new Date().getFullYear(),
   today = new Date(),
-  onPreviousYear,
-  onNextYear,
 }: YearlyProgressProps): JSX.Element {
   const { weeks } = useYearlyProgress(year, today);
   const todayKey = toDateKey(today);
-  const isCurrentYear = year >= today.getFullYear();
 
   return (
     <div className="yearly-progress">
-      <div className="yearly-progress-header">
-        <Text.Mono className="yearly-progress-title">
-          {`${year} — ${weeks.length} weeks`.toUpperCase()}
-        </Text.Mono>
-        <div className="yearly-progress-controls">
-          <button
-            type="button"
-            className="yearly-progress-arrow"
-            onClick={onPreviousYear}
-            aria-label="Previous year"
-          >
-            <Icon variant="arrowL" label="Previous year" />
-          </button>
-          <Text.Mono>{String(year)}</Text.Mono>
-          <button
-            type="button"
-            className="yearly-progress-arrow"
-            onClick={onNextYear}
-            disabled={isCurrentYear}
-            aria-label="Next year"
-          >
-            <Icon variant="arrowR" label="Next year" />
-          </button>
-        </div>
-      </div>
       <div className="yearly-progress-grid">
         {weeks.map((week) => {
           const isCurrentWeek = week.days.some((day) => toDateKey(day) === todayKey);
