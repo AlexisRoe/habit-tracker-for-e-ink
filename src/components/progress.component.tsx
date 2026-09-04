@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import type { JSX } from "react/jsx-runtime";
 
-import { Mono } from "./text.component";
+import { Text } from "./text.component";
 
 import "./progress.component.css";
 
@@ -97,9 +97,9 @@ export function ProgressOverview({ total, done }: ProgressOverviewProps): JSX.El
 
   return (
     <div className="progress-overview">
-      <Mono>{`${done}/${total} DONE`}</Mono>
-      <Mono>{`●`}</Mono>
-      <Mono>{`${doneInPercent}%`}</Mono>
+      <Text.Mono>{`${done}/${total} DONE`}</Text.Mono>
+      <Text.Mono>{`●`}</Text.Mono>
+      <Text.Mono>{`${doneInPercent}%`}</Text.Mono>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { JSX, ReactElement } from "react";
 
 import "./text.component.css";
 
+/** Props for {@link Text.Title}. */
 interface TitleProps {
   /** Title label displayed to users */
   children: ReactElement | string;
@@ -14,16 +15,17 @@ interface TitleProps {
  *
  * @example
  * ```tsx
- * <Title size="2">Projects</Title>
+ * <Text.Title size="2">Projects</Text.Title>
  * ```
  */
-export function Title(props: TitleProps): JSX.Element {
+function TitleText(props: TitleProps): JSX.Element {
   const size = props.size ?? "1";
 
   return <e-title level={size}>{props.children}</e-title>;
 }
 
-interface TitleLabelProps {
+/** Props for {@link Text.Label}. */
+interface LabelProps {
   /** Label all in uppercase and styling */
   children: string;
   /** Icon on the left */
@@ -35,10 +37,10 @@ interface TitleLabelProps {
  *
  * @example
  * ```tsx
- * <TitleLabel iconLeft={<Icon variant="chevL" onClick={goBack} />}>Projects</TitleLabel>
+ * <Text.Label iconLeft={<Icon variant="chevL" onClick={goBack} />}>Projects</Text.Label>
  * ```
  */
-export function TitleLabel(props: TitleLabelProps): JSX.Element {
+function LabelText(props: LabelProps): JSX.Element {
   if (props.iconLeft) {
     return (
       <div className="title-label-container">
@@ -57,7 +59,14 @@ export function TitleLabel(props: TitleLabelProps): JSX.Element {
   );
 }
 
-/** Props for {@link Mono}. */
+/** Props for {@link Text}. */
+interface TextProps {
+  /** Text content, rendered as a paragraph. */
+  children: ReactElement | string;
+  className?: string;
+}
+
+/** Props for {@link Text.Mono}. */
 interface MonoProps {
   /** Text content, rendered in a monospace font. */
   children: string;
@@ -69,13 +78,43 @@ interface MonoProps {
  *
  * @example
  * ```tsx
- * <Mono>{'01'}</Mono>
+ * <Text.Mono>{'01'}</Text.Mono>
  * ```
  */
-export function Mono({ children, className = "" }: MonoProps): JSX.Element {
+function MonoText({ children, className = "" }: MonoProps): JSX.Element {
   return (
     <e-text kind="mono" as="span" className={className}>
       {children}
     </e-text>
   );
 }
+
+/**
+ * Body copy, rendered through the `<e-text kind="body" as="p">` custom element.
+ * Also exposes a set of text variants as static properties: `Text.Title`
+ * (headings), `Text.Label` (uppercase labels, optionally icon-prefixed), and
+ * `Text.Mono` (monospace inline text).
+ *
+ * @example
+ * ```tsx
+ * <Text>No habits yet.</Text>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * <Text.Title size="2">Projects</Text.Title>
+ * <Text.Label>Add Habit</Text.Label>
+ * <Text.Mono>{'01'}</Text.Mono>
+ * ```
+ */
+export function Text({ children, className = "" }: TextProps): JSX.Element {
+  return (
+    <e-text kind="body" as="p" className={className}>
+      {children}
+    </e-text>
+  );
+}
+
+Text.Title = TitleText;
+Text.Label = LabelText;
+Text.Mono = MonoText;

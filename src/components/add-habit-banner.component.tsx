@@ -1,6 +1,8 @@
 import { type JSX, useState } from "react";
 
-import { Icon } from "./icons.component";
+import { Button } from "./button.component";
+import { Input } from "./input.component";
+import { Text } from "./text.component";
 
 import "./add-habit-banner.component.css";
 
@@ -48,20 +50,25 @@ export function AddHabitBanner({ onAdd, hidden = false }: AddHabitBannerProps): 
   if (isEditing) {
     return (
       <div className="add-habit-banner add-habit-banner-editing">
-        <input
+        <Input
           className="add-habit-banner-input"
-          type="text"
-          value={draftLabel}
-          onChange={(event) => setDraftLabel(event.target.value)}
-          aria-label="Habit label"
+          ariaLabel="Habit label"
+          onDebouncedChange={setDraftLabel}
+          debounceMs={0}
         />
         <div className="add-habit-banner-actions">
-          <button type="button" onClick={handleAccept} aria-label="Save habit">
-            <Icon variant="check" label="" />
-          </button>
-          <button type="button" onClick={handleCancel} aria-label="Cancel adding habit">
-            <Icon variant="close" label="" />
-          </button>
+          <Button.Naked
+            variant="check"
+            label="Save habit"
+            onClick={handleAccept}
+            className="add-habit-banner-action-button"
+          />
+          <Button.Naked
+            variant="close"
+            label="Cancel adding habit"
+            onClick={handleCancel}
+            className="add-habit-banner-action-button"
+          />
         </div>
       </div>
     );
@@ -69,15 +76,14 @@ export function AddHabitBanner({ onAdd, hidden = false }: AddHabitBannerProps): 
 
   return (
     <div className="add-habit-banner">
-      <span className="add-habit-banner-label">Add Habit</span>
-      <button
-        type="button"
-        className="add-habit-banner-button"
+      <Text.Label>Add Habit</Text.Label>
+      <Button.Naked
+        variant="plus"
+        label="Add habit"
+        size="16"
         onClick={() => setIsEditing(true)}
-        aria-label="Add habit"
-      >
-        <Icon variant="plus" label="Add habit" />
-      </button>
+        className="add-habit-banner-button"
+      />
     </div>
   );
 }

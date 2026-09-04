@@ -9,6 +9,8 @@ import "./input.component.css";
 interface InputProps {
   /** Field label. */
   label?: string;
+  /** Accessible label, used when no visible {@link label} is rendered. */
+  ariaLabel?: string;
   /** Placeholder text shown when the field is empty. */
   placeholder?: string;
   /** Helper text shown below the field. */
@@ -21,6 +23,8 @@ interface InputProps {
   onDebouncedChange: (value: string) => void;
   /** Debounce delay in milliseconds. Defaults to `300`. */
   debounceMs?: number;
+  /** Extra class name(s) applied to the underlying `<e-input>`. */
+  className?: string;
 }
 
 /**
@@ -41,7 +45,9 @@ export function Input(props: InputProps): JSX.Element {
 
   return (
     <e-input
+      className={props.className}
       label={props.label}
+      aria-label={props.ariaLabel}
       placeholder={props.placeholder}
       hint={props.hint ?? ""}
       default-value={value}

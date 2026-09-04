@@ -5,23 +5,13 @@
   gap: 1rem;
   width: 100%;
   margin-top: auto;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   background: #000000;
   color: #ffffff;
 }
 
-.add-habit-banner-label {
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.add-habit-banner-button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
+.add-habit-banner-button .ink-btn {
   color: #ffffff;
-  cursor: pointer;
 }
 
 .add-habit-banner-editing {
@@ -29,6 +19,10 @@
 }
 
 .add-habit-banner-input {
+  width: 100%;
+}
+
+.add-habit-banner-input .ink-control {
   width: 100%;
   background: none;
   border: none;
@@ -38,7 +32,7 @@
   padding: 0.25rem 0;
 }
 
-.add-habit-banner-input:focus {
+.add-habit-banner-input .ink-control:focus {
   outline: none;
 }
 
@@ -48,11 +42,6 @@
   gap: 1rem;
 }
 
-.add-habit-banner-actions button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
+.add-habit-banner-action-button .ink-btn {
   color: #ffffff;
-  cursor: pointer;
 }

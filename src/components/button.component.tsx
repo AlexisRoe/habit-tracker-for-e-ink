@@ -1,5 +1,5 @@
 import type { JSX, ReactNode } from "react";
-import { Icon } from "./icons.component";
+import { Icon, type IconProps } from "./icons.component";
 
 import "./button.component.css";
 
@@ -256,6 +256,37 @@ function BackButton({ onClick }: BackButtonProps): JSX.Element {
   );
 }
 
+/** Props for {@link Button.Naked}. */
+interface NakedButtonProps extends BaseButtonProps {
+  /** Which icon glyph to render. */
+  variant: IconProps["variant"];
+  /** Accessible label for the icon/button. */
+  label: string;
+  /** Icon size. Defaults to `'24'`. */
+  size?: IconProps["size"];
+  /** Extra class name(s) applied to the underlying button. */
+  className?: string;
+}
+
+/**
+ * Icon-only button with no background or border, used where a minimal
+ * control showing just an icon is needed.
+ *
+ * @example
+ * ```tsx
+ * <Button.Naked variant="check" label="Save habit" onClick={handleAccept} />
+ * ```
+ */
+function NakedButton({ onClick, variant, label, size, className }: NakedButtonProps): JSX.Element {
+  const combinedClassName = ["button-naked", className].filter(Boolean).join(" ");
+
+  return (
+    <Button variant="secondary" className={combinedClassName} onClick={onClick}>
+      <Icon variant={variant} label={label} size={size} />
+    </Button>
+  );
+}
+
 Button.Cancel = CancelButton;
 Button.Create = CreateButton;
 Button.Delete = DeleteButton;
@@ -265,3 +296,4 @@ Button.Add = AddButton;
 Button.Move = MoveButton;
 Button.Detail = DetailButton;
 Button.Back = BackButton;
+Button.Naked = NakedButton;

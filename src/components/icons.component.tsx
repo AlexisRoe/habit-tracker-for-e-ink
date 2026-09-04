@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 
 /** Props for {@link Icon}. */
-interface IconProps {
+export interface IconProps {
   /** Accessible label for the icon. Defaults to `''`. */
   label?: string;
   /** Icon size. Defaults to `'24'`. */

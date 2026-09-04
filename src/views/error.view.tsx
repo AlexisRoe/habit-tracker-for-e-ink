@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { EmptyState } from "../components/empty-state.component";
 import Page from "../components/page.component";
-import { Title } from "../components/text.component";
+import { Text } from "../components/text.component";
 import { convertDateToTitle } from "../utils/date-converter.util";
 
 interface ErrorViewProps {
@@ -17,7 +17,7 @@ function ErrorView({ message }: ErrorViewProps): JSX.Element {
   return (
     <Page>
       <Page.Header>
-        <Title>{convertDateToTitle()}</Title>
+        <Text.Title>{convertDateToTitle()}</Text.Title>
       </Page.Header>
       <Page.Content>
         <EmptyState icon="moon" message={message} />

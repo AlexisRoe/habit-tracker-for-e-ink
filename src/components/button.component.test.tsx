@@ -162,6 +162,32 @@ describe("Button.Detail", () => {
   });
 });
 
+describe("Button.Naked", () => {
+  it("renders an icon-only button with the naked class and calls onClick when clicked", () => {
+    const onClick = vi.fn();
+    const { container } = render(
+      <Button.Naked variant="check" label="Save habit" onClick={onClick} />,
+    );
+
+    expect(container.querySelector("e-button")).toHaveClass("button-naked");
+    expect(container.querySelector("e-icon")).toHaveAttribute("name", "check");
+    expect(container.querySelector("e-icon")).toHaveAttribute("label", "Save habit");
+
+    click(container);
+
+    expect(onClick).toHaveBeenCalled();
+  });
+
+  it("merges a custom class name with the naked class", () => {
+    const { container } = render(
+      <Button.Naked variant="plus" label="Add habit" onClick={vi.fn()} className="custom-class" />,
+    );
+
+    expect(container.querySelector("e-button")).toHaveClass("button-naked");
+    expect(container.querySelector("e-button")).toHaveClass("custom-class");
+  });
+});
+
 describe("Button.Back", () => {
   it('renders the "Back" label and calls onClick when clicked', () => {
     const onClick = vi.fn();

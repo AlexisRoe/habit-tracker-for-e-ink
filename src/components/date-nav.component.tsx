@@ -7,7 +7,7 @@ import {
   toDateKey,
 } from "../utils/date-converter.util";
 import { Icon } from "./icons.component";
-import { Mono } from "./text.component";
+import { Text } from "./text.component";
 
 import "./date-nav.component.css";
 
@@ -47,7 +47,7 @@ export function DateNav({
 
   return (
     <div className="date-nav">
-      <Mono className="date-nav-week">{convertDateToWeekRangeLabel(date)}</Mono>
+      <Text.Mono className="date-nav-week">{convertDateToWeekRangeLabel(date)}</Text.Mono>
       <div className="date-nav-controls">
         <button
           type="button"
@@ -58,7 +58,7 @@ export function DateNav({
           <Icon variant="arrowL" label="Previous week" />
         </button>
         <button type="button" className="date-nav-date" onClick={onDateClick}>
-          <Mono>{convertDateToTitle(today)}</Mono>
+          <Text.Mono>{convertDateToTitle(today)}</Text.Mono>
         </button>
         <button
           type="button"

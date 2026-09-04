@@ -3,7 +3,7 @@ import type { JSX } from "react";
 import { useYearlyProgress } from "../hooks/use-yearly-progress.hook";
 import { formatWeekRange, toDateKey } from "../utils/date-converter.util";
 import { Icon } from "./icons.component";
-import { Mono } from "./text.component";
+import { Text } from "./text.component";
 
 import "./yearly-progress.component.css";
 
@@ -43,9 +43,9 @@ export function YearlyProgress({
   return (
     <div className="yearly-progress">
       <div className="yearly-progress-header">
-        <Mono className="yearly-progress-title">
+        <Text.Mono className="yearly-progress-title">
           {`${year} — ${weeks.length} weeks`.toUpperCase()}
-        </Mono>
+        </Text.Mono>
         <div className="yearly-progress-controls">
           <button
             type="button"
@@ -55,7 +55,7 @@ export function YearlyProgress({
           >
             <Icon variant="arrowL" label="Previous year" />
           </button>
-          <Mono>{String(year)}</Mono>
+          <Text.Mono>{String(year)}</Text.Mono>
           <button
             type="button"
             className="yearly-progress-arrow"

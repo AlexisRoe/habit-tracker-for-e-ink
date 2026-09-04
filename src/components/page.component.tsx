@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 
 import "./page.component.css";
 import type { JSX } from "react/jsx-dev-runtime";
-import { Title } from "./text.component";
+import { Text } from "./text.component";
 
 /** Props for {@link Page}. */
 interface PageProps {
@@ -72,7 +72,7 @@ interface PageTitleProps {
  * <Page.Title>Year</Page.Title>
  */
 function PageTitle({ children = "HabitTracker" }: PageTitleProps): JSX.Element {
-  return <Title size="2">{children}</Title>;
+  return <Text.Title size="2">{children}</Text.Title>;
 }
 
 /** Props for {@link Page.Nav}. */
