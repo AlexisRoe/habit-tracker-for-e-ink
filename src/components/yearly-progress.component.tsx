@@ -2,6 +2,7 @@ import type { JSX } from "react";
 
 import { useYearlyProgress } from "../hooks/use-yearly-progress.hook";
 import { formatWeekRange, toDateKey } from "../utils/date-converter.util";
+import { Text } from "./text.component";
 
 import "./yearly-progress.component.css";
 
@@ -46,17 +47,15 @@ export function YearlyProgress({
               }
               key={week.weekNumber}
             >
-              <div className="yearly-progress-card-info">
-                <span className="yearly-progress-week-label">
-                  W{String(week.weekNumber).padStart(2, "0")}
-                </span>
-                <span className="yearly-progress-range">{formatWeekRange(week.days)}</span>
-              </div>
               <div className="yearly-progress-circle" aria-hidden="true">
                 <div
                   className="yearly-progress-circle-fill"
                   style={{ height: `${week.percentage}%` }}
                 />
+              </div>
+              <div className="yearly-progress-card-info">
+                <Text.Label>{`W${String(week.weekNumber).padStart(2, "0")}`}</Text.Label>
+                <Text.Mono>{formatWeekRange(week.days)}</Text.Mono>
               </div>
             </div>
           );
