@@ -55,6 +55,7 @@
 
 .button-habit-future .ink-btn[disabled] {
   background-image: none;
+  border: 1px solid #000000;
 }
 
 .button-habit-locked .ink-btn {
