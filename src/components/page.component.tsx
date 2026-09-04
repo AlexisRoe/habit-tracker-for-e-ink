@@ -72,7 +72,7 @@ interface PageTitleProps {
  * <Page.Title>Year</Page.Title>
  */
 function PageTitle({ children = "HabitTracker" }: PageTitleProps): JSX.Element {
-  return <Text.Title size="2">{children}</Text.Title>;
+  return <Text.Title size="3">{children}</Text.Title>;
 }
 
 /** Props for {@link Page.Nav}. */
