@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['apple-touch-icon.png'],
       manifest: {
         name: 'HabitTracker',
         short_name: 'habittracker',
@@ -32,8 +32,18 @@ export default defineConfig({
           { src: 'icons/icon-256x256.png', sizes: '256x256', type: 'image/png' },
           { src: 'icons/icon-384x384.png', sizes: '384x384', type: 'image/png' },
           { src: 'icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icons/icon-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
-          { src: 'icons/icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          {
+            src: 'icons/icon-192x192-maskable.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+          {
+            src: 'icons/icon-512x512-maskable.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
         ],
       },
     }),
